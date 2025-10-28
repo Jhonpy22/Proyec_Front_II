@@ -1,6 +1,6 @@
 // auth/hooks/useLoginForm.ts
 import { useState, ChangeEvent, FormEvent } from 'react';
-import type { LoginCredentials } from '../types/authTypes';
+import type { LoginCredentials } from '../../../models/types/authTypes';
 
 interface UseLoginFormReturn {
   formData: LoginCredentials;

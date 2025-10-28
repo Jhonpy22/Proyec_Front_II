@@ -1,7 +1,6 @@
-// auth/hooks/useAuth.ts
 import { useState, useEffect, useCallback } from 'react';
-import authService from '../services/authService';
-import type { LoginCredentials, UserInfo, LoginResult } from '../types/authTypes';
+import { authService } from '../services/authService'
+import type { LoginCredentials, UserInfo, LoginResult } from '../../../models/types/authTypes';
 
 interface UseAuthReturn {
   isAuthenticated: boolean;

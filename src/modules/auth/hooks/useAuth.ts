@@ -12,7 +12,7 @@ interface UseAuthReturn {
   hasRole: (role: string) => boolean;
   getRoles: () => string[];
 }
-
+/*PRUEBA*/
 export const useAuth = (): UseAuthReturn => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [user, setUser] = useState<UserInfo | null>(null);

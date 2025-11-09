@@ -1,10 +1,4 @@
-// modules/products/services/productsService.ts
-import type {
-  Product,
-  SaveProductRequest,
-  SaveProductResponse,
-  DeleteProductResponse,
-} from '../types';
+import type { DeleteProductResponse, Product, SaveProductRequest, SaveProductResponse } from "../../../models";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
@@ -17,9 +11,7 @@ class ProductsService {
     };
   }
 
-  /**
-   * Obtiene todos los productos del usuario
-   */
+
   async getProducts(): Promise<Product[]> {
     try {
       const response = await fetch(`${API_BASE_URL}/products`, {
@@ -38,9 +30,7 @@ class ProductsService {
     }
   }
 
-  /**
-   * Crea un nuevo producto
-   */
+
   async createProduct(data: SaveProductRequest): Promise<SaveProductResponse> {
     try {
       const response = await fetch(`${API_BASE_URL}/products`, {
@@ -60,9 +50,7 @@ class ProductsService {
     }
   }
 
-  /**
-   * Actualiza un producto existente
-   */
+  
   async updateProduct(id: string, data: SaveProductRequest): Promise<SaveProductResponse> {
     try {
       const response = await fetch(`${API_BASE_URL}/products/${id}`, {
@@ -82,9 +70,6 @@ class ProductsService {
     }
   }
 
-  /**
-   * Elimina un producto
-   */
   async deleteProduct(id: string): Promise<DeleteProductResponse> {
     try {
       const response = await fetch(`${API_BASE_URL}/products/${id}`, {

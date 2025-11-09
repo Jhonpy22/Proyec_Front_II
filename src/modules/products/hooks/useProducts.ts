@@ -1,7 +1,6 @@
-// modules/products/hooks/useProducts.ts
 import { useState, useEffect, useCallback } from 'react';
 import productsService from '../services/productsService';
-import type { Product, ProductForm, ValidationErrors } from '../types';
+import type { Product, ProductForm, ValidationErrors } from '../../../models/index';
 
 interface UseProductsReturn {
   products: Product[];
@@ -37,7 +36,7 @@ export const useProducts = (): UseProductsReturn => {
   const [showModal, setShowModal] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
 
-  // Cargar productos al montar
+
   useEffect(() => {
     loadProducts();
   }, []);

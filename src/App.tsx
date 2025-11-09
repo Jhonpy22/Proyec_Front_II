@@ -1,8 +1,11 @@
-// App.tsx
-import AppRoutes from './routes/AppRoutes';
+// import {PublicLayout} from './layout/public/PublicLayout';
+// import './App.css';
 
-function App() {
-  return <AppRoutes />;
-}
+// export default function App() {
+//   return (
+//     <>
+//       <PublicLayout />
+//     </>
 
-export default App;
+//   );
+// }

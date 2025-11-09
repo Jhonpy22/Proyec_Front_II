@@ -1,6 +1,5 @@
-// modules/products/components/ProductModal.tsx
 import React from 'react';
-import type { ProductForm, ValidationErrors } from '../types';
+import type { ProductForm, ValidationErrors } from '../../../models/index';
 
 interface ProductModalProps {
   isOpen: boolean;
@@ -34,15 +33,15 @@ export const ProductModal: React.FC<ProductModalProps> = ({
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8 border-4 border-blue-400">
-        
-        {/* Header */}
+
+      
         <div className="mb-6">
           <h2 className="text-xl font-semibold text-gray-700">
             {isEditing ? 'Editar producto' : 'Nombre del producto'}
           </h2>
         </div>
 
-        {/* Error general */}
+      
         {error && (
           <div className="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
             {error}
@@ -50,31 +49,29 @@ export const ProductModal: React.FC<ProductModalProps> = ({
         )}
 
         <form onSubmit={onSubmit} className="space-y-6">
+
           
-          {/* Nombre del producto */}
           <div>
             <input
               type="text"
               value={formData.name}
               onChange={(e) => onChange('name', e.target.value)}
               placeholder="Ingresar nombre"
-              className={`w-full px-4 py-3 border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all ${
-                errors.name ? 'border-red-400 bg-red-50' : 'border-gray-300 bg-white'
-              }`}
+              className={`w-full px-4 py-3 border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all ${errors.name ? 'border-red-400 bg-red-50' : 'border-gray-300 bg-white'
+                }`}
             />
             {errors.name && (
               <p className="mt-1.5 text-xs text-red-600">{errors.name}</p>
             )}
           </div>
 
-          {/* Cantidad de producto */}
+          
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-3 text-center">
               Cantidad de producto
             </label>
-            
+
             <div className="flex items-center justify-center space-x-6">
-              {/* Botón Decrementar */}
               <button
                 type="button"
                 onClick={onDecrement}
@@ -84,14 +81,14 @@ export const ProductModal: React.FC<ProductModalProps> = ({
                 −
               </button>
 
-              {/* Display de cantidad */}
+              
               <div className="w-20 h-12 bg-white border-2 border-gray-300 rounded-lg flex items-center justify-center">
                 <span className="text-2xl font-semibold text-gray-800">
                   {formData.quantity}
                 </span>
               </div>
 
-              {/* Botón Incrementar */}
+              
               <button
                 type="button"
                 onClick={onIncrement}
@@ -106,7 +103,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({
             )}
           </div>
 
-          {/* Botones */}
+          
           <div className="flex space-x-3 pt-4">
             <button
               type="button"

@@ -1,6 +1,5 @@
-// modules/simulationControl/components/CreditCardItem.tsx
 import React, { useState, useEffect } from 'react';
-import type { CreditCard } from '../types';
+import type { CreditCard } from '../../../models/index';
 
 interface CreditCardItemProps {
   card: CreditCard;

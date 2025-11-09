@@ -1,12 +1,4 @@
-// modules/simulationControl/services/simulationService.ts
-import type {
-  CreditCard,
-  SimulationStatus,
-  StartSimulationRequest,
-  StartSimulationResponse,
-  StopSimulationResponse,
-} from '../types';
-
+import type { CreditCard, SimulationStatus, StartSimulationRequest, StartSimulationResponse, StopSimulationResponse} from '../../../models/index';
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
 class SimulationService {
@@ -18,9 +10,7 @@ class SimulationService {
     };
   }
 
-  /**
-   * Obtiene todas las tarjetas disponibles para simulación
-   */
+  
   async getAvailableCards(): Promise<CreditCard[]> {
     try {
       const response = await fetch(`${API_BASE_URL}/simulation/cards`, {
@@ -39,9 +29,7 @@ class SimulationService {
     }
   }
 
-  /**
-   * Inicia la simulación con las tarjetas seleccionadas
-   */
+  
   async startSimulation(request: StartSimulationRequest): Promise<StartSimulationResponse> {
     try {
       const response = await fetch(`${API_BASE_URL}/simulation/start`, {
@@ -61,9 +49,6 @@ class SimulationService {
     }
   }
 
-  /**
-   * Detiene la simulación activa
-   */
   async stopSimulation(): Promise<StopSimulationResponse> {
     try {
       const response = await fetch(`${API_BASE_URL}/simulation/stop`, {
@@ -82,9 +67,7 @@ class SimulationService {
     }
   }
 
-  /**
-   * Obtiene el estado actual de la simulación (incluyendo saldos actualizados)
-   */
+  
   async getSimulationStatus(): Promise<SimulationStatus> {
     try {
       const response = await fetch(`${API_BASE_URL}/simulation/status`, {
@@ -103,10 +86,7 @@ class SimulationService {
     }
   }
 
-  /**
-   * Obtiene solo los saldos actualizados de las tarjetas en simulación
-   * Endpoint más ligero para polling frecuente
-   */
+
   async getCardsBalance(cardIds: string[]): Promise<CreditCard[]> {
     try {
       const response = await fetch(`${API_BASE_URL}/simulation/cards/balance`, {

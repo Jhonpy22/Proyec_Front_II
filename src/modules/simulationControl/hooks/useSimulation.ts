@@ -1,8 +1,6 @@
-// modules/simulationControl/hooks/useSimulation.ts
-// LISTO PARA BACKEND - Sin datos mock
 import { useState, useEffect, useCallback, useRef } from 'react';
 import simulationService from '../services/simulationService';
-import type { CreditCard } from '../types';
+import type { CreditCard } from '../../../models/index';
 
 interface UseSimulationReturn {
   cards: CreditCard[];

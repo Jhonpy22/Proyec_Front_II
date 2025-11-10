@@ -1,4 +1,3 @@
-// src/router/route.tsx
 import { createRootRoute, createRoute, createRouter, Outlet } from '@tanstack/react-router'
 import { Toaster } from 'react-hot-toast'
 import { Suspense } from 'react'
@@ -9,6 +8,7 @@ import AdminLayout from '../layout/admin/AdminLayout'
 import LandingPage from '../landing/LandingPage'
 import LoginPage from '../modules/auth/pages/LoginPage'
 import ProductsPage from '../modules/products/pages/ProductsPage'
+import SobreNosotros from '../components/ui/SobreNosotros'
 
 
 const rootRoute = createRootRoute({
@@ -35,7 +35,11 @@ const indexRoute = createRoute({
   path: '/',
   component: LandingPage,
 })
-
+const aboutUsRoute = createRoute({
+  getParentRoute: () => publicLayoutRoute,
+  path: '/sobre-nosotros',
+  component: SobreNosotros,
+})
 
 const loginRoute = createRoute({
   getParentRoute: () => publicLayoutRoute,
@@ -66,7 +70,7 @@ const productsRoute = createRoute({
 
 
 const routeTree = rootRoute.addChildren([
-  publicLayoutRoute.addChildren([indexRoute, loginRoute]),
+  publicLayoutRoute.addChildren([indexRoute, loginRoute, aboutUsRoute]),
   adminLayoutRoute.addChildren([adminIndexRoute, productsRoute]),
 ])
 

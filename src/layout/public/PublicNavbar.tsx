@@ -8,8 +8,7 @@ export const PublicNavbar: React.FC = () => {
   const menuItems = [
     { label: "Productos", href: "#" },
     { label: "Componentes", href: "#" },
-    { label: "Sobre Nosotros", href: "#" },
-    { label: "Soporte", href: "#" },
+    { label: "Sobre Nosotros", href: "/sobre-nosotros" },
   ];
 
   return (
@@ -33,7 +32,6 @@ export const PublicNavbar: React.FC = () => {
               </a>
             ))}
           </div>
-
           <div className="flex items-center space-x-4">
             <button 
               className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
@@ -63,7 +61,6 @@ export const PublicNavbar: React.FC = () => {
             </button>
           </div>
         </div>
-
         {isOpen && (
           <div className="md:hidden border-t border-gray-700">
             <div className="px-2 pt-2 pb-3 space-y-1">

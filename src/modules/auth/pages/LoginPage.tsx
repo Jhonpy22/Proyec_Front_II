@@ -1,5 +1,9 @@
 import type React from "react"
 import { useState } from "react"
+import { FiLogIn } from "react-icons/fi"
+import { MdEmail } from "react-icons/md"
+import { RiLockPasswordFill } from "react-icons/ri"
+import { TiArrowBack } from "react-icons/ti"
 
 export default function LoginPage() {
   const [emailFocused, setEmailFocused] = useState(false)
@@ -25,10 +29,10 @@ export default function LoginPage() {
       <div className="w-full max-w-md bg-black/20 backdrop-blur-xl border-2 border-white/20 rounded-3xl p-8 shadow-2xl">
         <h1 className="text-3xl font-bold text-white text-center mb-8">Iniciar Sesión</h1>
         <div className="mb-6">
-          <label className={`block text-sm font-medium mb-2 transition-colors duration-300 ${emailFocused || emailValue ? "text-[#ffffff]" : "text-[#3dc2e4]"
+          <label className={`text-lg gap-0.5 font-medium mb-2 transition-colors duration-300 inline-flex items-center ${emailFocused || emailValue ? "text-[#ffffff]" : "text-[#3dc2e4]"
             }`}
           >
-            Email
+            <MdEmail className="h-4 w-4" aria-hidden="true"/> Correo electrónico
           </label>
           <input
             type="email"
@@ -44,10 +48,10 @@ export default function LoginPage() {
         </div>
         <div className="mb-6">
           <label
-            className={`block text-sm font-medium mb-2 transition-colors duration-300 ${passwordFocused || passwordValue ? "text-[#ffffff]" : "text-[#3dc2e4]"
+            className={`inline-flex items-center text-lg font-medium mb-2 gap-0.5 transition-colors duration-300 ${passwordFocused || passwordValue ? "text-[#ffffff]" : "text-[#3dc2e4]"
               }`}
           >
-            Password
+            <RiLockPasswordFill className="h-4 w-4" aria-hidden="true" /> Contraseña
           </label>
           <div className="relative">
             <input
@@ -81,13 +85,13 @@ export default function LoginPage() {
         </div>
         <button
           onClick={handleSubmit}
-          className="w-full py-3 bg-[#ff4444] hover:bg-[#ff5555] text-white font-bold text-base rounded-full transition-all duration-300 shadow-lg hover:shadow-[#ff4444]/50 mb-6"
+          className="inline-flex items-center justify-center gap-1 w-full py-3  bg-[#ff4444] hover:bg-[#ff5555] text-white font-bold text-base rounded-full transition-all duration-300 shadow-lg hover:shadow-[#ff4444]/50 mb-6 "
         >
-          Login
+          Acceder <FiLogIn className="h-4 w-4" aria-hidden="true"/>
         </button>
         <p className="text-center text-white/70 text-sm">
-          <a href="/" className="text-[#00ccff] hover:text-[#3A99B4] transition font-semibold">
-            Volver a inicio
+          <a href="/" className="inline-flex items-center justify-center text-[#00ccff] hover:text-[#3A99B4] text-lg  transition font-semibold">
+            <TiArrowBack className="h-5 w-5" aria-hidden="true"/> Volver a inicio
           </a>
         </p>
       </div>

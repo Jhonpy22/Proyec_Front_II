@@ -3,12 +3,11 @@ import type { LoginCredentials } from '../../../models/index';
 
 
 export const authService = {
-  async login(dto: LoginCredentials): Promise<void> {
-    const { data } = await api.post('/Auth/login', dto);
-    const token = data?.token;
-      if (!token) throw new Error('No se recibió token del servidor')
-        localStorage.setItem('token', token)
-  },
+  async Login (Auth: LoginCredentials): Promise<string> {
+  const response = await api.post<string>('Auth/login', Auth);
+  return response.data;
+  
+},
 
   logout() {
     localStorage.removeItem('token'); 

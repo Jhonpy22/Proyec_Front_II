@@ -14,7 +14,39 @@ import SobreNosotros from '../components/ui/SobreNosotros'
 const rootRoute = createRootRoute({
   component: () => (
     <>
-      <Toaster />
+    <Toaster
+        position="top-right"
+        toastOptions={{
+          duration: 2500,
+          style: {
+            background: '#0d0d0d',
+            border: '1px solid #3dc2e4',
+            color: 'white',
+            padding: '10px 16px',
+            fontSize: '15px',
+            borderRadius: '12px',
+          },
+          success: {
+            iconTheme: {
+              primary: '#0ed9ff',
+              secondary: '#ffffff',
+            },
+            style: {
+              border: '1px solid #0ed9ff',
+            },
+          },
+          error: {
+            iconTheme: {
+              primary: '#ff4444',
+              secondary: '#ffffff',
+            },
+            style: {
+              border: '1px solid #ff4444',
+            },
+          },
+        }}
+      />
+
       <Suspense fallback={<div className="p-6 text-center">Cargando…</div>}>
         <Outlet />
       </Suspense>

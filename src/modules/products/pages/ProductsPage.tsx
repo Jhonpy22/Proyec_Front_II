@@ -28,7 +28,7 @@ const ProductsPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center bg-[gray-50]">
         <div className="text-center">
           <svg className="animate-spin h-12 w-12 text-blue-600 mx-auto mb-4" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
@@ -41,7 +41,7 @@ const ProductsPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#5a5a5a]">
       {/* Header */}
       <div className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-6 py-6">
@@ -61,7 +61,7 @@ const ProductsPage: React.FC = () => {
       </div>
 
     
-      <div className="max-w-7xl mx-auto px-6 py-8">
+      <div className="max-w-7xl mx-auto px-6 py-8 bg-[#5a5a5a]">
         {products.length === 0 ? (
           <div className="text-center py-20">
             <div className="inline-block p-6 bg-white rounded-full shadow-sm mb-4">

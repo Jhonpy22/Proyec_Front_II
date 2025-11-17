@@ -21,7 +21,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed }) => {
   }
   
   const menuItems = [
-    { path: '/admin/products', label: 'Productos', icon: Box }
+    { path: '/admin/simulation', label: 'Simulador', icon: Box },
+    { path: '/admin/products', label: 'Productos', icon: Box },
+    { path: '/admin/profile', label: 'Perfil', icon: Box }
   ]
   
   return (

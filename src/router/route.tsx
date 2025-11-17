@@ -9,6 +9,8 @@ import LandingPage from '../landing/LandingPage'
 import LoginPage from '../modules/auth/pages/LoginPage'
 import ProductsPage from '../modules/products/pages/ProductsPage'
 import SobreNosotros from '../components/ui/SobreNosotros'
+import SimulationControlPage from '../modules/simulationControl/pages/SimulationControlPage'
+import ProfilePage from '../modules/profile/pages/ProfilePage'
 
 
 const rootRoute = createRootRoute({
@@ -94,16 +96,29 @@ const adminIndexRoute = createRoute({
 })
 
 
+const simulationRoute = createRoute({
+  getParentRoute: () => adminLayoutRoute,
+  path: '/admin/simulation',
+  component: SimulationControlPage,
+})
+
 const productsRoute = createRoute({
   getParentRoute: () => adminLayoutRoute,
   path: '/admin/products',
   component: ProductsPage,
 })
 
+const profileRoute = createRoute({ //Este lo cambian ya que no vamos a manejar perfil
+  getParentRoute: () => adminLayoutRoute,
+  path: '/admin/profile',
+  component: ProfilePage,
+})
+
+
 
 const routeTree = rootRoute.addChildren([
   publicLayoutRoute.addChildren([indexRoute, loginRoute, aboutUsRoute]),
-  adminLayoutRoute.addChildren([adminIndexRoute, productsRoute]),
+  adminLayoutRoute.addChildren([adminIndexRoute, productsRoute, simulationRoute, profileRoute ]),
 ])
 
 

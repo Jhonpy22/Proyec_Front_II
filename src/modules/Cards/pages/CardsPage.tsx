@@ -18,7 +18,7 @@ export default function CardsPage() {
           Error al cargar productos.
         </p>
       ) : (
-        <Tabla />
+        <Tabla rows={rows} />
       )}
     </div>
   );

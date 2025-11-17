@@ -1,4 +1,5 @@
-import Tabla from "../hooks/tabla";
+import { createColumnHelper } from "@tanstack/react-table";
+import Tabla from "../components/tabla";
 
 interface Card extends Record<string, unknown> {
   id: number;
@@ -10,6 +11,8 @@ interface Card extends Record<string, unknown> {
   expirationDate: string;
   status: string;
 }
+
+const columnHelper = createColumnHelper<Card>();
 
 const CardsPage = () => {
   const mockCards: Card[] = [
@@ -66,7 +69,7 @@ const CardsPage = () => {
     {
       id: 6,
       cardNumber: "5105 1051 0510 5100",
-      holderName: "Patricia Rojas Méndez",
+      holderName: "Joseth Manuel vargas",
       bank: "Davivienda",
       balance: 175000,
       creditLimit: 250000,
@@ -116,53 +119,47 @@ const CardsPage = () => {
   ];
 
   const columns = [
-    {
-      key: "cardNumber",
+    columnHelper.accessor("cardNumber", {
       header: "Número de Tarjeta",
-      sortable: true,
-      render: (card: Card) => (
+      cell: (info) => (
         <span className="font-mono font-semibold text-gray-800">
-          {card.cardNumber}
+          {info.getValue()}
         </span>
       ),
-    },
-    {
-      key: "holderName",
+      enableSorting: true,
+    }),
+    columnHelper.accessor("holderName", {
       header: "Titular",
-      sortable: true,
-      render: (card: Card) => (
+      cell: (info) => (
         <div>
-          <div className="font-semibold text-gray-800">{card.holderName}</div>
-          <div className="text-xs text-gray-500">{card.bank}</div>
+          <div className="font-semibold text-gray-800">{info.getValue()}</div>
+          <div className="text-xs text-gray-500">{info.row.original.bank}</div>
         </div>
       ),
-    },
-    {
-      key: "balance",
+      enableSorting: true,
+    }),
+    columnHelper.accessor("balance", {
       header: "Saldo Disponible",
-      sortable: true,
-      render: (card: Card) => (
+      cell: (info) => (
         <div>
           <div className="font-bold text-green-600">
-            ₡{card.balance.toLocaleString()}
+            ₡{info.getValue().toLocaleString()}
           </div>
           <div className="text-xs text-gray-500">
-            de ₡{card.creditLimit.toLocaleString()}
+            de ₡{info.row.original.creditLimit.toLocaleString()}
           </div>
         </div>
       ),
-    },
-    {
-      key: "expirationDate",
+      enableSorting: true,
+    }),
+    columnHelper.accessor("expirationDate", {
       header: "Vencimiento",
-      sortable: true,
-      className: "text-center",
-    },
-    {
-      key: "status",
+      cell: (info) => info.getValue(),
+      enableSorting: true,
+    }),
+    columnHelper.accessor("status", {
       header: "Estado",
-      sortable: true,
-      render: (card: Card) => {
+      cell: (info) => {
         const statusColors: Record<string, string> = {
           Activa: "bg-green-100 text-green-800 border-green-300",
           Bloqueada: "bg-red-100 text-red-800 border-red-300",
@@ -171,18 +168,19 @@ const CardsPage = () => {
         return (
           <span
             className={`px-3 py-1 rounded-full text-xs font-semibold border ${
-              statusColors[card.status] || "bg-gray-100 text-gray-800"
+              statusColors[info.getValue()] || "bg-gray-100 text-gray-800"
             }`}
           >
-            {card.status}
+            {info.getValue()}
           </span>
         );
       },
-    },
-    {
-      key: "actions",
+      enableSorting: true,
+    }),
+    columnHelper.display({
+      id: "actions",
       header: "Acciones",
-      render: () => (
+      cell: () => (
         <div className="flex space-x-2">
           <button className="px-3 py-1 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition text-xs font-medium">
             Ver
@@ -192,26 +190,17 @@ const CardsPage = () => {
           </button>
         </div>
       ),
-    },
+    }),
   ];
 
   const handleRowClick = (card: Card) => {
     console.log("Tarjeta seleccionada:", card);
   };
 
-  const handleAddCard = () => {
-    console.log("Agregar nueva tarjeta");
-  };
-
-  const handleExport = () => {
-    console.log("Exportar datos");
-  };
-
   return (
     <Tabla
       data={mockCards}
       columns={columns}
-      title="Gestión de Tarjetas de Crédito"
       onRowClick={handleRowClick}
       emptyMessage="No hay tarjetas registradas"
       isLoading={false}
@@ -219,48 +208,6 @@ const CardsPage = () => {
       hoverable={true}
       bordered={false}
       compact={false}
-      actions={[
-        {
-          label: "Agregar Tarjeta",
-          onClick: handleAddCard,
-          variant: "primary",
-          icon: (
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 4v16m8-8H4"
-              />
-            </svg>
-          ),
-        },
-        {
-          label: "Exportar",
-          onClick: handleExport,
-          variant: "secondary",
-          icon: (
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-              />
-            </svg>
-          ),
-        },
-      ]}
     />
   );
 };

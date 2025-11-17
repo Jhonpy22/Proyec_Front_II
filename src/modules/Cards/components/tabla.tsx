@@ -1,16 +1,16 @@
 import React, { useState } from "react";
-
-interface Column<T> {
-  key: string;
-  header: string;
-  render?: (item: T) => React.ReactNode;
-  sortable?: boolean;
-  className?: string;
-}
+import {
+  useReactTable,
+  getCoreRowModel,
+  getSortedRowModel,
+  SortingState,
+  ColumnDef,
+  flexRender,
+} from "@tanstack/react-table";
 
 interface TableProps<T> {
   data: T[];
-  columns: Column<T>[];
+  columns: ColumnDef<T, any>[];
   onRowClick?: (item: T) => void;
   emptyMessage?: string;
   isLoading?: boolean;
@@ -40,47 +40,18 @@ const Tabla = <T extends Record<string, unknown>>({
   title,
   actions,
 }: TableProps<T>) => {
-  const [sortConfig, setSortConfig] = useState<{
-    key: string;
-    direction: "asc" | "desc";
-  } | null>(null);
+  const [sorting, setSorting] = useState<SortingState>([]);
 
-  const handleSort = (key: string) => {
-    let direction: "asc" | "desc" = "asc";
-    if (
-      sortConfig &&
-      sortConfig.key === key &&
-      sortConfig.direction === "asc"
-    ) {
-      direction = "desc";
-    }
-    setSortConfig({ key, direction });
-  };
-
-  const sortedData = React.useMemo(() => {
-    if (!sortConfig) return data;
-
-    return [...data].sort((a, b) => {
-      const aValue = a[sortConfig.key];
-      const bValue = b[sortConfig.key];
-
-      if (aValue === bValue) return 0;
-
-      if (typeof aValue === "string" && typeof bValue === "string") {
-        return sortConfig.direction === "asc"
-          ? aValue.localeCompare(bValue)
-          : bValue.localeCompare(aValue);
-      }
-
-      if (typeof aValue === "number" && typeof bValue === "number") {
-        return sortConfig.direction === "asc"
-          ? aValue - bValue
-          : bValue - aValue;
-      }
-
-      return 0;
-    });
-  }, [data, sortConfig]);
+  const table = useReactTable({
+    data,
+    columns,
+    state: {
+      sorting,
+    },
+    onSortingChange: setSorting,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+  });
 
   const getActionButtonClass = (variant?: string) => {
     const baseClass =
@@ -128,7 +99,7 @@ const Tabla = <T extends Record<string, unknown>>({
   }
 
   return (
-    <div className="w-full bg-[#5a5a5a]">
+    <div className="w-full">
       {(title || actions) && (
         <div className="bg-white shadow-sm border-b border-gray-200">
           <div className="px-6 py-6">
@@ -155,7 +126,7 @@ const Tabla = <T extends Record<string, unknown>>({
         </div>
       )}
 
-      <div className="px-6 py-8">
+      <div>
         {data.length === 0 ? (
           <div className="text-center py-20">
             <div className="inline-block p-6 bg-white rounded-full shadow-sm mb-4">
@@ -188,62 +159,72 @@ const Tabla = <T extends Record<string, unknown>>({
           >
             <table className="w-full bg-white shadow-md rounded-lg overflow-hidden">
               <thead className="bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-blue-400">
-                <tr>
-                  {columns.map((column, index) => (
-                    <th
-                      key={index}
-                      className={`${
-                        compact ? "px-4 py-3" : "px-6 py-4"
-                      } text-left text-sm font-semibold text-gray-700 uppercase tracking-wider ${
-                        column.sortable
-                          ? "cursor-pointer hover:bg-gray-200 transition-colors select-none"
-                          : ""
-                      } ${column.className || ""}`}
-                      onClick={() => column.sortable && handleSort(column.key)}
-                    >
-                      <div className="flex items-center space-x-2">
-                        <span>{column.header}</span>
-                        {column.sortable && (
-                          <span className="text-gray-400">
-                            {sortConfig?.key === column.key ? (
-                              sortConfig.direction === "asc" ? (
-                                <svg
-                                  className="w-4 h-4"
-                                  fill="currentColor"
-                                  viewBox="0 0 20 20"
-                                >
-                                  <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
-                                </svg>
-                              ) : (
-                                <svg
-                                  className="w-4 h-4"
-                                  fill="currentColor"
-                                  viewBox="0 0 20 20"
-                                >
-                                  <path d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" />
-                                </svg>
-                              )
-                            ) : (
-                              <svg
-                                className="w-4 h-4"
-                                fill="currentColor"
-                                viewBox="0 0 20 20"
-                              >
-                                <path d="M5 12a1 1 0 102 0V6.414l1.293 1.293a1 1 0 001.414-1.414l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L5 6.414V12zM15 8a1 1 0 10-2 0v5.586l-1.293-1.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L15 13.586V8z" />
-                              </svg>
-                            )}
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <tr key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => (
+                      <th
+                        key={header.id}
+                        className={`${
+                          compact ? "px-4 py-3" : "px-6 py-4"
+                        } text-left text-sm font-semibold text-gray-700 uppercase tracking-wider border-r border-gray-300 last:border-r-0 ${
+                          header.column.getCanSort()
+                            ? "cursor-pointer hover:bg-gray-200 transition-colors select-none"
+                            : ""
+                        }`}
+                        onClick={header.column.getToggleSortingHandler()}
+                      >
+                        <div className="flex items-center space-x-2">
+                          <span>
+                            {header.isPlaceholder
+                              ? null
+                              : flexRender(
+                                  header.column.columnDef.header,
+                                  header.getContext()
+                                )}
                           </span>
-                        )}
-                      </div>
-                    </th>
-                  ))}
-                </tr>
+                          {header.column.getCanSort() && (
+                            <span className="text-gray-400">
+                              {{
+                                asc: (
+                                  <svg
+                                    className="w-4 h-4"
+                                    fill="currentColor"
+                                    viewBox="0 0 20 20"
+                                  >
+                                    <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
+                                  </svg>
+                                ),
+                                desc: (
+                                  <svg
+                                    className="w-4 h-4"
+                                    fill="currentColor"
+                                    viewBox="0 0 20 20"
+                                  >
+                                    <path d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" />
+                                  </svg>
+                                ),
+                              }[header.column.getIsSorted() as string] ?? (
+                                <svg
+                                  className="w-4 h-4"
+                                  fill="currentColor"
+                                  viewBox="0 0 20 20"
+                                >
+                                  <path d="M5 12a1 1 0 102 0V6.414l1.293 1.293a1 1 0 001.414-1.414l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L5 6.414V12zM15 8a1 1 0 10-2 0v5.586l-1.293-1.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L15 13.586V8z" />
+                                </svg>
+                              )}
+                            </span>
+                          )}
+                        </div>
+                      </th>
+                    ))}
+                  </tr>
+                ))}
               </thead>
               <tbody className="divide-y divide-gray-200">
-                {sortedData.map((item, rowIndex) => (
+                {table.getRowModel().rows.map((row, rowIndex) => (
                   <tr
-                    key={rowIndex}
-                    onClick={() => onRowClick && onRowClick(item)}
+                    key={row.id}
+                    onClick={() => onRowClick && onRowClick(row.original)}
                     className={`
                       ${
                         striped && rowIndex % 2 === 0
@@ -254,16 +235,17 @@ const Tabla = <T extends Record<string, unknown>>({
                       ${onRowClick ? "cursor-pointer" : ""}
                     `}
                   >
-                    {columns.map((column, colIndex) => (
+                    {row.getVisibleCells().map((cell) => (
                       <td
-                        key={colIndex}
+                        key={cell.id}
                         className={`${
                           compact ? "px-4 py-3" : "px-6 py-4"
-                        } text-sm text-gray-700 ${column.className || ""}`}
+                        } text-sm text-gray-700 border-r border-gray-200 last:border-r-0`}
                       >
-                        {column.render
-                          ? column.render(item)
-                          : (item[column.key] as React.ReactNode)}
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
                       </td>
                     ))}
                   </tr>
@@ -278,13 +260,13 @@ const Tabla = <T extends Record<string, unknown>>({
             <span>
               Mostrando{" "}
               <span className="font-semibold text-gray-800">
-                {sortedData.length}
+                {table.getRowModel().rows.length}
               </span>{" "}
-              {sortedData.length === 1 ? "registro" : "registros"}
+              {table.getRowModel().rows.length === 1 ? "registro" : "registros"}
             </span>
-            {sortConfig && (
+            {sorting.length > 0 && (
               <button
-                onClick={() => setSortConfig(null)}
+                onClick={() => setSorting([])}
                 className="text-blue-600 hover:text-blue-700 font-medium"
               >
                 Limpiar orden

@@ -31,3 +31,11 @@ export interface ValidationErrors {
     name?: string;
     quantity?: string;
 }
+
+
+export interface ProductResponse {
+    product_Id: number;
+    product_Name: string;
+    quantity: number;
+    price: number;
+}

@@ -1,4 +1,3 @@
-// services/simulationService.ts
 import api from "../../../api/apiConfig";
 
 export const SimulationService = {

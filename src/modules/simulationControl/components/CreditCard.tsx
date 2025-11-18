@@ -1,5 +1,6 @@
 import React from "react";
-import type { Card } from "../services/cardService";
+import type { Card } from "../../../models";
+
 
 interface CreditCardProps {
   card: Card;

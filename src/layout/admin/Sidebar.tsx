@@ -3,6 +3,9 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { useAuthContext } from "../../modules/auth/contexts/AuthContext";
 import ConfirmLogoutModal from "../../components/ui/ConfirmLogoutModal";
 import { LogOut, Box } from "lucide-react";
+import { FaAddressCard } from "react-icons/fa";
+import { MdProductionQuantityLimits } from "react-icons/md";
+import { IoMdHome } from "react-icons/io";
 
 interface SidebarProps {
   collapsed: boolean;
@@ -21,10 +24,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed }) => {
   };
 
   const menuItems = [
-    { path: "/admin/simulation", label: "Simulador", icon: Box },
+    { path: "/admin", label: "Inicio", icon: IoMdHome },
+    { path: "/admin/simulation", label: "Simulador", icon: MdProductionQuantityLimits },
     { path: "/admin/products", label: "Productos", icon: Box },
-    { path: "/admin/cards", label: "Tarjetas", icon: Box },
-    { path: "/admin/profile", label: "Perfil", icon: Box },
+    { path: "/admin/cards", label: "Tarjetas", icon: FaAddressCard },
   ];
 
   return (

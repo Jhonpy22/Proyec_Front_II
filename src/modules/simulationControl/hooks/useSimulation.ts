@@ -1,33 +1,27 @@
 import { useMutation } from "@tanstack/react-query";
+import type { AxiosError } from "axios";
+import toast from "react-hot-toast";
 import { SimulationService } from "../services/simulationService";
-import { useState } from "react";
 
-export function useSimulation() {
-  const [isProcessRunning, setIsProcessRunning] = useState(false);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+interface BackendError {
+  message: string;
+  statusCode?: number;
+}
 
-  const {
-    mutateAsync: startPurchaseJob,
-    isPending: isLoading,
-    isError,
-    error,
-    isSuccess,
-  } = useMutation({
+export function useStartSimulation() {
+  return useMutation<void, AxiosError<BackendError>, void>({
     mutationFn: () => SimulationService.start(),
 
     onSuccess: () => {
-      setSuccessMessage("Simulación iniciada correctamente 🚀");
-      setIsProcessRunning(true); // ← activa el polling
+      toast.success("Simulación iniciada correctamente ");
+    },
+
+    onError: (error) => {
+      const message =
+        error.response?.data?.message ??
+        "Ocurrió un error al iniciar la simulación";
+
+      toast.error(message);
     },
   });
-
-  return {
-    startPurchaseJob,
-    isLoading,
-    isError,
-    error,
-    isSuccess,
-    successMessage,
-    isProcessRunning,
-  };
 }

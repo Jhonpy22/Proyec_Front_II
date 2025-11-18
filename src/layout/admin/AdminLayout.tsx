@@ -8,7 +8,7 @@ export default function AdminLayout() {
   const [collapsed, setCollapsed] = useState(false)
   
   return (
-    <div className="flex min-h-screen bg-slate-900">
+    <div className="flex min-h-screen bg-gradient-to-br from-[#0A0F1C] via-[#0B1B2B] to-[#081522]">
       <aside 
         className={`bg-gradient-to-b from-slate-900 to-slate-800 text-white flex flex-col transition-all duration-300 border-r border-cyan-500/20 ${
           collapsed ? 'w-20' : 'w-64'
@@ -36,9 +36,10 @@ export default function AdminLayout() {
         </div>
       </aside>
       
-      <main className="flex-1 overflow-auto p-6 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+      <main className="flex-1 overflow-auto p-6 bg-gradient-to-br from-[#272727] via-[#6b6b6b] to-[#0D1117]">
         <Outlet />
       </main>
+      
     </div>
   )
 }

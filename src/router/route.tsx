@@ -1,22 +1,15 @@
-import {
-  createRootRoute,
-  createRoute,
-  createRouter,
-  Outlet,
-} from "@tanstack/react-router";
+import {createRootRoute, createRoute, createRouter,Outlet} from "@tanstack/react-router";
 import { Toaster } from "react-hot-toast";
 import { Suspense } from "react";
-
 import { PublicLayout } from "../layout/public/PublicLayout";
 import AdminLayout from "../layout/admin/AdminLayout";
-
 import LandingPage from "../landing/LandingPage";
 import LoginPage from "../modules/auth/pages/LoginPage";
 import ProductsPage from "../modules/products/pages/ProductsPage";
 import CardsPage from "../modules/Cards/pages/CardsPage";
 import SobreNosotros from "../components/ui/SobreNosotros";
 import SimulationControlPage from "../modules/simulationControl/pages/SimulationControlPage";
-import ProfilePage from "../modules/profile/pages/ProfilePage";
+import AdminHomePage from "../components/ui/AdminHomePage";
 
 const rootRoute = createRootRoute({
   component: () => (
@@ -93,9 +86,7 @@ const adminLayoutRoute = createRoute({
 const adminIndexRoute = createRoute({
   getParentRoute: () => adminLayoutRoute,
   path: "/admin",
-  component: () => (
-    <div className="p-6">Bienvenido al panel de administración</div>
-  ),
+  component:AdminHomePage,
 });
 
 const simulationRoute = createRoute({
@@ -116,12 +107,6 @@ const cardsRoute = createRoute({
   component: CardsPage,
 });
 
-const profileRoute = createRoute({
-  //Este lo cambian ya que no vamos a manejar perfil
-  getParentRoute: () => adminLayoutRoute,
-  path: "/admin/profile",
-  component: ProfilePage,
-});
 
 const routeTree = rootRoute.addChildren([
   publicLayoutRoute.addChildren([indexRoute, loginRoute, aboutUsRoute]),
@@ -130,7 +115,7 @@ const routeTree = rootRoute.addChildren([
     productsRoute,
     cardsRoute,
     simulationRoute,
-    profileRoute,
+    
   ]),
 ]);
 

@@ -1,4 +1,3 @@
-// types.ts
 export interface Card {
   card_Id: number;
   user_Id: number;
@@ -6,5 +5,5 @@ export interface Card {
   card_Number: string;
   money: number;
   expiration_Date: string;
-  userName?: string; // <-- permitido, pero no obligatorio
+  userName?: string;
 }

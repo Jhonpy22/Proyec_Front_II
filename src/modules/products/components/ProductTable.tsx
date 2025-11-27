@@ -1,59 +1,73 @@
-import {
-  useReactTable,
-  getCoreRowModel,
-  flexRender,
-  createColumnHelper,
-} from "@tanstack/react-table";
+import { useReactTable, getCoreRowModel, flexRender, createColumnHelper} from "@tanstack/react-table";
 import type { ProductResponse } from "../../../models";
-import { Tag, Package, Hash, DollarSign } from "lucide-react";
+import { Package, DollarSign, Pencil } from "lucide-react";
+import { FiMoreVertical } from "react-icons/fi";
+import { BsFillBagCheckFill } from "react-icons/bs";
 
 type Props = {
   rows: ProductResponse[];
+  onEdit: (row: ProductResponse) => void;
 };
 
-export default function ProductsTable({ rows }: Props) {
+export default function ProductsTable({ rows, onEdit }: Props) {
   const h = createColumnHelper<ProductResponse>();
 
   const columns = [
-    h.accessor("product_Id", {
-      header: () => (
-        <div className="flex items-center gap-1 text-white w-[10ch]">
-          <Hash className="w-4 h-4" />
-          ID
-        </div>
-      ),
-      cell: i => i.getValue(),
-    }),
-
     h.accessor("product_Name", {
       header: () => (
-        <div className="flex items-center gap-1 text-white w-[25ch]">
-          <Package className="w-4 h-4" />
+        <div className="flex items-center gap-2 text-cyan-300 font-bold uppercase tracking-wider ">
+          <Package className="w-5 h-5 text-cyan-400" />
           Nombre
         </div>
       ),
-      cell: i => <span className="font-medium">{i.getValue()}</span>,
+      cell: i => <span className="font-semibold text-white">{i.getValue()}</span>,
     }),
 
     h.accessor("quantity", {
       header: () => (
-        <div className="flex items-center gap-1 text-white w-[10ch]">
-          <Tag className="w-4 h-4" />
+        <div className="flex items-center gap-2 text-cyan-300 font-bold uppercase tracking-wider">
+          <BsFillBagCheckFill  className="w-5 h-5 text-cyan-400" />
           Cantidad
         </div>
       ),
-      cell: i => i.getValue(),
+      cell: i => (
+        <div className="flex items-center justify-center gap-1">
+          <span className="text-white font-medium">{i.getValue()}</span>
+        </div>
+      ),
     }),
 
     h.accessor("price", {
       header: () => (
-        <div className="flex items-center gap-1 text-white w-[10ch]">
-          <DollarSign className="w-4 h-4" />
+        <div className="flex items-center justify-center gap-2 text-cyan-300 font-bold uppercase tracking-wider">
+          <DollarSign className="w-5 h-5" />
           Precio
         </div>
       ),
       cell: i => (
-        <span>₡{Number(i.getValue()).toLocaleString("es-CR")}</span>
+        <div className="flex items-center justify-center">
+          <span className="font-bold text-white">₡{Number(i.getValue()).toLocaleString("es-CR")}</span>
+        </div>
+      ),
+    }),
+    h.display({
+      id: 'actions',
+      header:() => (
+        <div className="flex items-center justify-center gap-2 text-cyan-300 font-bold uppercase tracking-wider">
+          <FiMoreVertical className="w-5 h-5 text-cyan-400" />
+          Acciones
+        </div>
+      ),
+      cell: ({ row }) => (
+        <div className="flex justify-center gap-2 items-center">
+          <button 
+            className="flex items-center gap-2 bg-gradient-to-r from-gray-600 to-gray-500 hover:from-gray-500 hover:to-gray-400 text-white px-3 py-2 rounded-lg font-semibold text-xs shadow-lg shadow-gray-500/50 transition-all duration-200 hover:scale-105 hover:shadow-gray-500/80 whitespace-nowrap" 
+            onClick={() => onEdit(row.original)}
+          >
+            <Pencil className="w-4 h-4" />  
+            Editar
+          </button>
+        </div>
       ),
     }),
   ];
@@ -78,41 +92,39 @@ export default function ProductsTable({ rows }: Props) {
   }
 
   return (
-    <div className="overflow-x-auto rounded-xl border-2 border-[#0077B6] shadow-lg shadow-[#0077B6]/30 transition-all duration-300 mt-6">
-      <table className="min-w-full table-fixed bg-white border border-[#0077B6] rounded-md overflow-hidden text-sm">
-        <thead className="bg-[#0077B6] text-white">
+    <div className="overflow-x-auto rounded-xl shadow-2xl shadow-cyan-500/40 border border-cyan-500/60 transition-all duration-300 mt-6 backdrop-blur-sm">
+      <div className="bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 rounded-lg overflow-hidden">
+        <div className="grid grid-cols-[180px_220px_230px_140px] gap-4 px-6 py-4 border-b border-cyan-500/40 bg-gradient-to-r from-slate-950 via-cyan-950/40 to-slate-950">
           {table.getHeaderGroups().map(hg => (
-            <tr key={hg.id}>
-              {hg.headers.map(hc => (
-                <th
-                  key={hc.id}
-                  className="px-4 py-3 border border-[#00B4D8] text-left font-semibold tracking-wide uppercase shadow-sm"
-                >
-                  {flexRender(hc.column.columnDef.header, hc.getContext())}
-                </th>
-              ))}
-            </tr>
+            hg.headers.map(hc => (
+              <div key={hc.id} className="font-bold tracking-widest uppercase text-sm flex items-center">
+                {flexRender(hc.column.columnDef.header, hc.getContext())}
+              </div>
+            ))
           ))}
-        </thead>
+        </div>
 
-        <tbody className="divide-y divide-[#CAF0F8]">
-          {table.getRowModel().rows.map(r => (
-            <tr
+        
+        <div className="divide-y divide-cyan-500/20">
+          {table.getRowModel().rows.map((r) => (
+            <div
               key={r.id}
-              className="hover:bg-[#90E0EF]/60 transition duration-300 ease-in-out transform hover:scale-[1.01]"
+              className="grid grid-cols-[180px_220px_270px_160px] gap-4 px-6 py-4 hover:bg-cyan-950/40 transition-all duration-300 border-cyan-500/20 group relative"
             >
+              <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/0 via-cyan-500/5 to-cyan-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+              
               {r.getVisibleCells().map(c => (
-                <td
+                <div
                   key={c.id}
-                  className="px-4 py-3 border border-[#CAF0F8] text-[#03045E] align-middle"
+                  className="text-gray-100 align-middle relative z-10 flex items-center"
                 >
                   {flexRender(c.column.columnDef.cell, c.getContext())}
-                </td>
+                </div>
               ))}
-            </tr>
+            </div>
           ))}
-        </tbody>
-      </table>
+        </div>
+      </div>
     </div>
   );
 }

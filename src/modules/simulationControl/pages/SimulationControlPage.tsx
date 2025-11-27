@@ -45,10 +45,10 @@ const SimulationControlPage: React.FC = () => {
 
       <div className="max-w-7xl mx-auto px-6 py-8">
         {isPending && (
-          <div className="mb-6 rounded-xl border-2 border-red-500/50 bg-gradient-to-br from-red-900/20 to-red-900/10 p-4 shadow-lg shadow-red-500/20 backdrop-blur-sm">
+          <div className="mb-6 rounded-xl border-2 border-yellow-500/50 bg-gradient-to-br from-yellow-900/20 to-yellow-900/10 p-4 shadow-lg shadow-yellow-500/20 backdrop-blur-sm">
             <div className="flex items-center gap-3">
-              <AlertCircle className="h-5 w-5 text-red-400 animate-pulse" />
-              <p className="text-sm font-medium text-red-300">
+              <AlertCircle className="h-5 w-5 text-yellow-400 animate-pulse" />
+              <p className="text-sm font-medium text-yellow-300">
                 Proceso de simulación en curso... Por favor espera.
               </p>
             </div>
